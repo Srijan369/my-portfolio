@@ -1,0 +1,271 @@
+{% extends 'portfolio_app/base.html' %}
+{% load static %}
+
+{% block title %}{{ project.title }} - Portfolio{% endblock %}
+
+{% block content %}
+<section class="project-detail">
+    <div class="project-detail-container">
+        <div class="project-detail-card">
+            <a href="{% url 'portfolio_app:index' %}#portfolio" class="back-button">
+                <i class='bx bx-arrow-back'></i> Back to Portfolio
+            </a>
+            
+            <div class="project-detail-header">
+                <h1>{{ project.title }}</h1>
+                <div class="project-tech-tags">
+                    {% for tech in project.get_technologies_list %}
+                        <span class="tech-tag">{{ tech }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="project-detail-image">
+                {% if project.image and project.image.url %}
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                {% else %}
+                    <img src="{% static 'images/default-project.jpg' %}" alt="{{ project.title }}">
+                {% endif %}
+            </div>
+            
+            <div class="project-detail-content">
+                <h3>Project Overview</h3>
+                <div class="project-full-description">
+                    {{ project.description|safe|linebreaks }}
+                </div>
+                
+                {% if project.project_url %}
+                <div class="project-live-link">
+                    <a href="{{ project.project_url }}" target="_blank" class="btn-box">
+                        View Live Project <i class='bx bx-link-external'></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.project-detail {
+    min-height: 100vh;
+    padding: 120px 10% 80px;
+    background: #081b29;
+}
+
+.project-detail-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.project-detail-card {
+    background: rgba(5, 17, 41, 0.8);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 0 30px rgba(0, 238, 255, 0.1);
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #0ef;
+    text-decoration: none;
+    font-size: 16px;
+    margin-bottom: 30px;
+    transition: 0.3s;
+}
+
+.back-button:hover {
+    transform: translateX(-5px);
+    color: #fff;
+}
+
+.project-detail-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.project-detail-header h1 {
+    font-size: 42px;
+    color: #0ef;
+    margin-bottom: 20px;
+}
+
+.project-tech-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.tech-tag {
+    background: rgba(0, 238, 255, 0.15);
+    color: #0ef;
+    padding: 6px 18px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid #0ef;
+}
+
+.project-detail-image {
+    margin: 30px 0;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 238, 255, 0.2);
+}
+
+.project-detail-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s;
+}
+
+.project-detail-image:hover img {
+    transform: scale(1.02);
+}
+
+.project-detail-content h3 {
+    font-size: 28px;
+    color: #0ef;
+    margin-bottom: 20px;
+}
+
+.project-full-description {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #ddd;
+    margin-bottom: 30px;
+    text-align: justify;
+}
+
+/* Rich text styling */
+.project-full-description p {
+    margin-bottom: 15px;
+}
+
+.project-full-description h1,
+.project-full-description h2,
+.project-full-description h3 {
+    color: #0ef;
+    margin: 20px 0 10px;
+}
+
+.project-full-description h4 {
+    color: #fff;
+    margin: 15px 0 10px;
+}
+
+.project-full-description ul,
+.project-full-description ol {
+    margin: 10px 0 15px 30px;
+}
+
+.project-full-description li {
+    margin: 5px 0;
+}
+
+.project-full-description strong {
+    color: #0ef;
+}
+
+.project-full-description em {
+    color: #88ffcc;
+}
+
+.project-full-description code {
+    background: #1a1a1a;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    color: #0ef;
+}
+
+.project-full-description pre {
+    background: #1a1a1a;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 15px 0;
+}
+
+.project-full-description pre code {
+    background: none;
+    padding: 0;
+    color: #0ef;
+}
+
+.project-full-description blockquote {
+    border-left: 4px solid #0ef;
+    padding-left: 20px;
+    margin: 15px 0;
+    color: #aaa;
+    font-style: italic;
+}
+
+.project-full-description a {
+    color: #0ef;
+    text-decoration: none;
+}
+
+.project-full-description a:hover {
+    text-decoration: underline;
+}
+
+.project-live-link {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.project-live-link .btn-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .project-detail {
+        padding: 100px 5% 60px;
+    }
+    
+    .project-detail-card {
+        padding: 25px;
+    }
+    
+    .project-detail-header h1 {
+        font-size: 28px;
+    }
+    
+    .project-detail-content h3 {
+        font-size: 24px;
+    }
+    
+    .project-full-description {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+    
+    .tech-tag {
+        font-size: 12px;
+        padding: 4px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .project-detail-header h1 {
+        font-size: 24px;
+    }
+    
+    .project-detail-content h3 {
+        font-size: 20px;
+    }
+    
+    .project-full-description {
+        font-size: 14px;
+    }
+}
+</style>
+{% endblock %}

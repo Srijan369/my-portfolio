@@ -1,0 +1,30 @@
+{% extends 'portfolio_app/base.html' %}
+{% load static %}
+
+{% block title %}About Me - Portfolio{% endblock %}
+
+{% block content %}
+<section class="about" id="about">
+    <div class="about-img">
+        <img src="{% static 'images/Purple1.png' %}" alt="Profile Image">
+    </div>
+    <div class="about-text">
+        <h2>About<span> Me</span></h2>
+        <h4>{{ global_profile.title|default:"AI Developer" }}</h4>
+        <p>
+            {% if global_profile.bio %}
+                {{ global_profile.bio }}
+            {% else %}
+                I am an Artificial Intelligence Developer with a strong foundation in Python and Data Science.
+                My work focuses on designing and implementing intelligent systems to solve complex problems.
+                I have hands-on experience in machine learning, deep learning, and predictive analytics.
+                I am passionate about transforming data into meaningful insights through AI-driven solutions.
+                My approach combines technical expertise with a problem-solving mindset.
+                I continuously strive to learn emerging technologies and apply them effectively.
+                My objective is to contribute to innovative projects that create real-world impact.
+            {% endif %}
+        </p>
+        <a href="{% url 'portfolio_app:contact' %}" class="btn-box">Hire Me</a>
+    </div>
+</section>
+{% endblock %}

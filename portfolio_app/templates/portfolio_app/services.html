@@ -1,0 +1,52 @@
+{% extends 'portfolio_app/base.html' %}
+{% load static %}
+
+{% block title %}My Services - Portfolio{% endblock %}
+
+{% block content %}
+<section>
+    <div class="services" id="services">
+        <div class="container">
+            <h1 class="sub-title">My <span>Services</span></h1>
+            <div class="services-list">
+                {% if services %}
+                    {% for service in services %}
+                        <div>
+                            <i class='{{ service.icon_class }}' style='color:#00eeff'></i>
+                            <h2>{{ service.title }}</h2>
+                            <p>{{ service.description|truncatewords:30 }}</p>
+                            <a href="#" class="read">Learn More</a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <!-- Default services if none in database -->
+                    <div>
+                        <i class='bx bx-code' style='color:#00eeff'></i>
+                        <h2>Data Analyst</h2>
+                        <p>Expert in data analysis, visualization, and interpretation. Transforming raw data into actionable insights for business growth.</p>
+                        <a href="#" class="read">Learn More</a>
+                    </div>
+                    <div>
+                        <i class='bx bx-crop' style='color:#00eeff'></i>
+                        <h2>Machine Learning</h2>
+                        <p>Building intelligent ML models for predictive analytics, classification, and pattern recognition using advanced algorithms.</p>
+                        <a href="#" class="read">Learn More</a>
+                    </div>
+                    <div>
+                        <i class='bx bxl-apple' style='color:#00eeff'></i>
+                        <h2>AI Solutions</h2>
+                        <p>Developing cutting-edge AI solutions including NLP, computer vision, and generative AI applications.</p>
+                        <a href="#" class="read">Learn More</a>
+                    </div>
+                    <div>
+                        <i class='bx bxs-ghost' style='color:#00eeff'></i>
+                        <h2>Data Science</h2>
+                        <p>Comprehensive data science services including data preprocessing, feature engineering, and model deployment.</p>
+                        <a href="#" class="read">Learn More</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

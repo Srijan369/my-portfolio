@@ -1,0 +1,117 @@
+{% load static %}
+
+<div class="portfolio" id="portfolio">
+    <div class="main-text">
+        <h2>Latest <span>Projects</span></h2>
+
+        <div class="portfolio-content">
+            {% if projects %}
+                {% for project in projects %}
+                    <div class="row">
+                        {% if project.image and project.image.url %}
+                            <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                        {% else %}
+                            <img src="{% static 'images/default-project.jpg' %}" alt="{{ project.title }}">
+                        {% endif %}
+                        <div class="layer">
+                            <h5>{{ project.title }}</h5>
+                            <div class="project-description">
+                                {{ project.description|safe|truncatewords:40|linebreaks }}
+                            </div>
+                            <p><strong>Tech:</strong> {{ project.technologies }}</p>
+                            <a href="{% url 'portfolio_app:project_detail' project.id %}">
+                                <i class='bx bx-link-external' style="color: aliceblue;"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="row">
+                    <img src="{% static 'images/PY.webp' %}" alt="Python Project">
+                    <div class="layer">
+                        <h5>AI Chatbot Development</h5>
+                        <div class="project-description">
+                            Developed an intelligent chatbot using Python and NLP for customer service automation with 100% accuracy, sentiment analysis, and automated email responses.
+                        </div>
+                        <p><strong>Tech:</strong> Python, TensorFlow, NLTK, Flask</p>
+                        <a href="#"><i class='bx bx-link-external' style="color: aliceblue;"></i></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <img src="{% static 'images/DS.webp' %}" alt="Data Science Project">
+                    <div class="layer">
+                        <h5>Predictive Analytics Dashboard</h5>
+                        <div class="project-description">
+                            Created an interactive dashboard for sales prediction using machine learning algorithms and real-time data visualization.
+                        </div>
+                        <p><strong>Tech:</strong> Python, Pandas, Scikit-learn, Django</p>
+                        <a href="#"><i class='bx bx-link-external' style="color: aliceblue;"></i></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <img src="{% static 'images/AI.webp' %}" alt="AI Project">
+                    <div class="layer">
+                        <h5>Computer Vision System</h5>
+                        <div class="project-description">
+                            Built a real-time object detection system using deep learning for security and surveillance applications.
+                        </div>
+                        <p><strong>Tech:</strong> Python, OpenCV, YOLO, CNN</p>
+                        <a href="#"><i class='bx bx-link-external' style="color: aliceblue;"></i></a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.project-description {
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: center;
+    max-height: 120px;
+    overflow-y: auto;
+    padding: 0 10px;
+}
+
+.project-description p {
+    margin-bottom: 8px;
+}
+
+.project-description strong {
+    color: #0ef;
+}
+
+.project-description ul, 
+.project-description ol {
+    text-align: left;
+    margin: 5px 0;
+    padding-left: 20px;
+}
+
+.project-description li {
+    margin: 3px 0;
+    font-size: 12px;
+}
+
+/* Custom scrollbar for description */
+.project-description::-webkit-scrollbar {
+    width: 5px;
+}
+
+.project-description::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 5px;
+}
+
+.project-description::-webkit-scrollbar-thumb {
+    background: #0ef;
+    border-radius: 5px;
+}
+
+.project-description::-webkit-scrollbar-thumb:hover {
+    background: #00aaff;
+}
+</style>

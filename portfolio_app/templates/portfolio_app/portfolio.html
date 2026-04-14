@@ -1,0 +1,208 @@
+{% extends 'portfolio_app/base.html' %}
+{% load static %}
+
+{% block title %}My Portfolio - Portfolio{% endblock %}
+
+{% block content %}
+<section>
+    <div class="portfolio" id="project">
+        <div class="main-text">
+            <h2>Latest <span>Projects</span></h2>
+
+            <div class="portfolio-content">
+                {% if projects %}
+                    {% for project in projects %}
+                        <div class="row">
+                            <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                            <div class="layer">
+                                <h5>{{ project.title }}</h5>
+                                <p>{{ project.description|truncatewords:30 }}</p>
+                                <p><strong>Tech:</strong> {{ project.technologies }}</p>
+                                <a href="{% url 'portfolio_app:project_detail' project.id %}">
+                                    <i class='bx bx-link-external' style="color: aliceblue;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <!-- Default portfolio projects -->
+                    <div class="row">
+                        <img src="{% static 'images/PY.webp' %}" alt="Python Project">
+                        <div class="layer">
+                            <h5>AI Chatbot Development</h5>
+                            <p>Developed an intelligent chatbot using Python and NLP for customer service automation with 95% accuracy.</p>
+                            <p><strong>Tech:</strong> Python, TensorFlow, NLTK</p>
+                            <a href="#"><i class='bx bx-link-external' style="color: aliceblue;"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <img src="{% static 'images/DS.webp' %}" alt="Data Science Project">
+                        <div class="layer">
+                            <h5>Predictive Analytics Dashboard</h5>
+                            <p>Created an interactive dashboard for sales prediction using machine learning algorithms and real-time data.</p>
+                            <p><strong>Tech:</strong> Python, Pandas, Scikit-learn, Django</p>
+                            <a href="#"><i class='bx bx-link-external' style="color: aliceblue;"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <img src="{% static 'images/AI.webp' %}" alt="AI Project">
+                        <div class="layer">
+                            <h5>Computer Vision System</h5>
+                            <p>Built a real-time object detection system using deep learning for security and surveillance applications.</p>
+                            <p><strong>Tech:</strong> Python, OpenCV, YOLO, CNN</p>
+                            <a href="#"><i class='bx bx-link-external' style="color: aliceblue;"></i></a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.portfolio {
+    padding: 50px 10%;
+}
+
+.main-text {
+    padding-top: 130px;
+    margin-top: 0;
+}
+
+.main-text h2 {
+    font-size: 60px;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.main-text h2 span {
+    color: #0ef;
+}
+
+.portfolio-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(359px, auto));
+    gap: 2rem;
+}
+
+.row {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+.row img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    transition: transform 0.5s;
+}
+
+.layer {
+    width: 100%;
+    height: 0;
+    background: linear-gradient(rgba(0,0,0,0.7), #0ef);
+    position: absolute;
+    border-radius: 8px;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 40px;
+    transition: height 0.5s;
+}
+
+.layer h5 {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.layer p {
+    color: #fff;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.layer strong {
+    color: #0ef;
+}
+
+.layer i {
+    color: #ff004f;
+    margin-top: 20px;
+    font-size: 20px;
+    background: #fff;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.row:hover img {
+    transform: scale(1.1);
+}
+
+.row:hover .layer {
+    height: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .portfolio-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .portfolio {
+        padding: 30px 5%;
+    }
+    
+    .main-text h2 {
+        font-size: 40px;
+    }
+    
+    .portfolio-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .layer p {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-text h2 {
+        font-size: 32px;
+    }
+    
+    .layer {
+        padding: 0 20px;
+    }
+    
+    .layer h5 {
+        font-size: 16px;
+    }
+    
+    .layer p {
+        font-size: 0.75rem;
+    }
+}
+</style>
+{% endblock %}

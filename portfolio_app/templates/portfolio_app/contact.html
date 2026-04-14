@@ -1,0 +1,382 @@
+{% extends 'portfolio_app/base.html' %}
+{% load static %}
+
+{% block title %}Contact Me - Portfolio{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Alert messages styling */
+.alert {
+    padding: 15px 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    max-width: 90%;
+    width: fit-content;
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1000;
+    animation: slideIn 0.5s ease-out;
+}
+
+.alert-success {
+    background-color: #0ef;
+    color: #081b29;
+    border-left: 5px solid #00ff00;
+}
+
+.alert-error {
+    background-color: #ff4444;
+    color: #fff;
+    border-left: 5px solid #cc0000;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Form error styling */
+.errorlist {
+    color: #ff4444;
+    list-style: none;
+    margin: 5px 0;
+    padding: 0;
+    font-size: 14px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="contact" id="contact">
+    <div class="contact-text">
+        <h2>Contact <span>Me</span></h2>
+        <h4>Let's work Together</h4>
+        <p>Have a project in mind? I'd love to hear about it! Whether you need help with AI development, 
+           data science, or just want to connect, feel free to reach out. I'm always excited to collaborate 
+           on innovative projects and bring ideas to life.</p>
+        <div class="contact-list">
+            <li><i class='bx bxs-send bx-flip-vertical'></i> {{ global_profile.email|default:"contact@gmail.com" }}</li>
+            <li><i class='bx bxs-phone'></i> {{ global_profile.phone|default:"0123456789" }}</li>
+            {% if global_profile.location %}
+            <li><i class='bx bxs-map'></i> {{ global_profile.location }}</li>
+            {% endif %}
+        </div>
+        <div class="contact-icons">
+            {% for social in global_social_links %}
+                <a href="{{ social.url }}" target="_blank"><i class='{{ social.icon_class }}'></i></a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="contact-form">
+        <form method="POST" action="{% url 'portfolio_app:contact' %}" id="contactForm">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <input type="text" name="name" placeholder="Enter Your Name" required 
+                       value="{{ form.name.value|default:'' }}">
+                {% if form.name.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.name.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <input type="email" name="email" placeholder="Enter Your Email" required
+                       value="{{ form.email.value|default:'' }}">
+                {% if form.email.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.email.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <input type="text" name="subject" placeholder="Enter Your Subject"
+                       value="{{ form.subject.value|default:'' }}">
+                {% if form.subject.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.subject.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <textarea name="message" cols="40" rows="10" placeholder="Enter Your Message" required>{{ form.message.value|default:'' }}</textarea>
+                {% if form.message.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.message.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <input type="submit" value="Send Message" class="send">
+        </form>
+        
+        <div id="formStatus" style="display: none;"></div>
+    </div>
+</section>
+
+<style>
+.contact {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    gap: 3rem;
+    padding-left: 30px;
+    margin-top: 130px;
+    padding: 70px 10% 0;
+}
+
+.contact-text h2 {
+    font-size: 90px;
+    line-height: 1;
+    text-align: center;
+}
+
+.contact-text h2 span {
+    color: #0ef;
+}
+
+.contact-text h4 {
+    margin: 15px 0;
+    color: rgb(228, 228, 228);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.contact-text p {
+    color: rgb(177, 177, 177);
+    font-size: 18px;
+    line-height: 30px;
+    margin-bottom: 2rem;
+}
+
+.contact-list {
+    margin-bottom: 3rem;
+}
+
+.contact-list li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-list i {
+    display: inline-block;
+    color: #0ef;
+    font-size: 20px;
+    font-weight: 600;
+    transition: all .40s ease;
+}
+
+.contact-list li a:hover {
+    transform: scale(1.01) translateY(-5px);
+    color: #0ef;
+}
+
+.contact-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.contact-icons i {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 2px solid #0ef;
+    border-radius: 50%;
+    font-size: 20px;
+    color: #0ef;
+    text-decoration: none;
+    transition: .5s ease;
+}
+
+.contact-icons i:hover {
+    background: #0ef;
+    color: #000;
+    box-shadow: 0 0 20px #0ef;
+}
+
+.contact-form form {
+    position: relative;
+}
+
+.contact-form form input,
+.contact-form form textarea {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 18px;
+    background: #555557;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.contact-form form input:focus,
+.contact-form form textarea:focus {
+    border: 2px solid #0ef;
+    background: #444;
+}
+
+.contact-form textarea {
+    resize: none;
+    height: 220px;
+}
+
+.contact-form form .send {
+    display: inline-block;
+    padding: 14px 60px;
+    background: #0ef;
+    border-radius: 40px;
+    font-size: 18px;
+    color: #081b29;
+    letter-spacing: 1px;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.contact-form form .send:hover {
+    box-shadow: 0 0 5px cyan, 0 0 25px cyan, 0 0 50px cyan, 0 0 100px cyan;
+    transform: translateY(-3px);
+}
+
+.form-group {
+    margin-bottom: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .contact {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 100px 5% 50px;
+    }
+    
+    .contact-text h2 {
+        font-size: 60px;
+    }
+    
+    .contact-text p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-text h2 {
+        font-size: 48px;
+    }
+    
+    .contact-text h4 {
+        font-size: 18px;
+    }
+    
+    .contact-list li {
+        font-size: 14px;
+    }
+    
+    .contact-form form input,
+    .contact-form form textarea {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-text h2 {
+        font-size: 36px;
+    }
+    
+    .contact-text p {
+        font-size: 14px;
+        line-height: 24px;
+    }
+    
+    .contact-form form .send {
+        padding: 12px 40px;
+        font-size: 16px;
+    }
+}
+</style>
+
+<script>
+// Auto-hide alert messages after 5 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+        setTimeout(() => {
+            alert.style.animation = 'slideOut 0.5s ease-out forwards';
+            setTimeout(() => {
+                alert.remove();
+            }, 500);
+        }, 5000);
+    });
+});
+
+// Form validation and AJAX submission (optional)
+document.getElementById('contactForm')?.addEventListener('submit', function(e) {
+    const name = this.querySelector('input[name="name"]').value;
+    const email = this.querySelector('input[name="email"]').value;
+    const message = this.querySelector('textarea[name="message"]').value;
+    
+    if (name.length < 2) {
+        e.preventDefault();
+        alert('Please enter a valid name (at least 2 characters)');
+        return false;
+    }
+    
+    if (!email.includes('@') || !email.includes('.')) {
+        e.preventDefault();
+        alert('Please enter a valid email address');
+        return false;
+    }
+    
+    if (message.length < 10) {
+        e.preventDefault();
+        alert('Please enter a message with at least 10 characters');
+        return false;
+    }
+});
+
+// Add slideOut animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

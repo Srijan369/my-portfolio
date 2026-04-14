@@ -1,0 +1,277 @@
+{% extends 'portfolio_app/base.html' %}
+{% load static %}
+
+{% block title %}My Skills - Portfolio{% endblock %}
+
+{% block content %}
+<h1 class="sub-title">My <span>Skills</span></h1>
+
+<section>
+    <div class="container1" id="Skills">
+        <h1 class="heading1">Technical Skills</h1>
+        <div class="Technical-bars">
+            {% if technical_skills %}
+                {% for skill in technical_skills %}
+                    <div class="bar">
+                        <i class='{{ skill.icon_class }}' style='color:{{ skill.color }}'></i>
+                        <div class="info">
+                            <span>{{ skill.name }}</span>
+                        </div>
+                        <div class="progress-line">
+                            <span style="width: {{ skill.percentage }}%; background-color: #0ef;" data-percent="{{ skill.percentage }}%"></span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Default technical skills -->
+                <div class="bar">
+                    <i class='bx bxl-html5' style='color:#E34C26'></i>
+                    <div class="info"><span>HTML</span></div>
+                    <div class="progress-line"><span style="width: 73%"></span></div>
+                </div>
+                <div class="bar">
+                    <i class='bx bxl-css3' style='color:#6924b3'></i>
+                    <div class="info"><span>CSS</span></div>
+                    <div class="progress-line"><span style="width: 78%"></span></div>
+                </div>
+                <div class="bar">
+                    <i class='bx bxl-javascript' style='color:#F7DF1E'></i>
+                    <div class="info"><span>JavaScript</span></div>
+                    <div class="progress-line"><span style="width: 60%"></span></div>
+                </div>
+                <div class="bar">
+                    <i class='bx bxl-python' style='color:#3d6998'></i>
+                    <div class="info"><span>Python</span></div>
+                    <div class="progress-line"><span style="width: 93%"></span></div>
+                </div>
+                <div class="bar">
+                    <i class='bx bxl-postgresql' style='color:#f29111'></i>
+                    <div class="info"><span>SQL</span></div>
+                    <div class="progress-line"><span style="width: 90%"></span></div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container1">
+        <h1 class="heading1">Professional Skills</h1>
+        <div class="radial-bars">
+            {% if professional_skills %}
+                {% for skill in professional_skills %}
+                    <div class="radial-bar">
+                        <svg x="0px" y="0px" viewBox="0 0 200 200">
+                            <circle class="progress-bar" cx="100" cy="100" r="80"></circle>
+                            <circle class="path path-{{ forloop.counter }}" cx="100" cy="100" r="80"></circle>
+                        </svg>
+                        <div class="percentage">{{ skill.percentage }}%</div>
+                        <div class="text">{{ skill.name }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Default professional skills -->
+                <div class="radial-bar">
+                    <svg x="0px" y="0px" viewBox="0 0 200 200">
+                        <circle class="progress-bar" cx="100" cy="100" r="80"></circle>
+                        <circle class="path path-1" cx="100" cy="100" r="80"></circle>
+                    </svg>
+                    <div class="percentage">90%</div>
+                    <div class="text">Creativity</div>
+                </div>
+                <div class="radial-bar">
+                    <svg x="0px" y="0px" viewBox="0 0 200 200">
+                        <circle class="progress-bar" cx="100" cy="100" r="80"></circle>
+                        <circle class="path path-2" cx="100" cy="100" r="80"></circle>
+                    </svg>
+                    <div class="percentage">85%</div>
+                    <div class="text">Communication</div>
+                </div>
+                <div class="radial-bar">
+                    <svg x="0px" y="0px" viewBox="0 0 200 200">
+                        <circle class="progress-bar" cx="100" cy="100" r="80"></circle>
+                        <circle class="path path-3" cx="100" cy="100" r="80"></circle>
+                    </svg>
+                    <div class="percentage">95%</div>
+                    <div class="text">Problem Solving</div>
+                </div>
+                <div class="radial-bar">
+                    <svg x="0px" y="0px" viewBox="0 0 200 200">
+                        <circle class="progress-bar" cx="100" cy="100" r="80"></circle>
+                        <circle class="path path-4" cx="100" cy="100" r="80"></circle>
+                    </svg>
+                    <div class="percentage">93%</div>
+                    <div class="text">Team Work</div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<style>
+/* Ensure progress-line has proper styling */
+.progress-line {
+    position: relative;
+    border-radius: 10px;
+    width: 100%;
+    height: 5px;
+    background-color: #000;
+    margin-top: 8px;
+}
+
+.progress-line span {
+    height: 100%;
+    background-color: #0ef;
+    position: absolute;
+    border-radius: 10px;
+    animation: animateBar 1s cubic-bezier(1,0,0.5,1) forwards;
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+@keyframes animateBar {
+    100% {
+        transform: scaleX(1);
+    }
+}
+
+.progress-line span::after {
+    position: absolute;
+    padding: 1px 8px;
+    background-color: #000;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 3px;
+    top: -25px;
+    right: 0;
+    content: attr(data-percent);
+    opacity: 0;
+    animation: showText 0.5s 1s linear forwards;
+}
+
+@keyframes showText {
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Radial bars styling */
+.radial-bars {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+.radial-bars .radial-bar {
+    width: 50%;
+    height: 170px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.radial-bars .radial-bar svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    width: 120px;
+    height: 160px;
+}
+
+.radial-bars .radial-bar .progress-bar {
+    stroke-width: 10;
+    stroke: #333;
+    fill: transparent;
+    stroke-dasharray: 502;
+    stroke-dashoffset: 502;
+    stroke-linecap: round;
+}
+
+.radial-bars .radial-bar .path {
+    stroke-width: 10;
+    stroke: #0ef;
+    fill: transparent;
+    stroke-dasharray: 502;
+    stroke-dashoffset: 502;
+    stroke-linecap: round;
+}
+
+.radial-bar .percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 17px;
+    font-weight: 500;
+    animation: showText 0.5s 1s linear forwards;
+    opacity: 0;
+}
+
+.radial-bar .text {
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    left: 50%;
+    bottom: -5px;
+    transform: translateX(-50%);
+    font-size: 17px;
+    font-weight: 500;
+    animation: showText 0.5s 1s linear forwards;
+    opacity: 0;
+}
+
+/* Path animations for radial bars */
+.path-1 { animation: animate-path1 1s 1s linear forwards; }
+.path-2 { animation: animate-path2 1s 1s linear forwards; }
+.path-3 { animation: animate-path3 1s 1s linear forwards; }
+.path-4 { animation: animate-path4 1s 1s linear forwards; }
+
+@keyframes animate-path1 {
+    100% { stroke-dashoffset: 50; }
+}
+@keyframes animate-path2 {
+    100% { stroke-dashoffset: 175; }
+}
+@keyframes animate-path3 {
+    100% { stroke-dashoffset: 125; }
+}
+@keyframes animate-path4 {
+    100% { stroke-dashoffset: 75; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container1 {
+        width: 100%;
+        padding: 40px 20px;
+        margin-left: 0;
+    }
+    
+    .radial-bars .radial-bar {
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+// Ensure percentage display works properly
+document.addEventListener('DOMContentLoaded', function() {
+    // For technical skills progress bars
+    document.querySelectorAll('.progress-line span').forEach(span => {
+        if (!span.getAttribute('data-percent')) {
+            const width = span.style.width;
+            span.setAttribute('data-percent', width);
+        }
+    });
+    
+    // For radial bars, ensure percentages are displayed
+    document.querySelectorAll('.radial-bar .percentage').forEach(percentage => {
+        percentage.style.opacity = '1';
+    });
+    
+    document.querySelectorAll('.radial-bar .text').forEach(text => {
+        text.style.opacity = '1';
+    });
+});
+</script>
+{% endblock %}

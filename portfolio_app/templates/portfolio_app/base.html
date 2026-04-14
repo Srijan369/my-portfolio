@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Portfolio - AI Developer{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+
+    <style>
+      /* Smooth scrolling for the whole page */
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 80px;
+      }
+
+      /* Fix ONLY for About, Services, Portfolio, Contact */
+      #about,
+      #services,
+      #portfolio,
+      #contact {
+        scroll-margin-top: 100px;
+      }
+
+      /* Keep Skills as original */
+      #skills {
+        scroll-margin-top: 0px;
+      }
+
+      /* Mobile menu styles */
+      .menu-toggle {
+        display: none;
+        font-size: 30px;
+        cursor: pointer;
+        color: #0ef;
+      }
+
+      /* Active nav link style */
+      .navbar a.active {
+        color: #0ef !important;
+        text-shadow: 0 0 8px #0ef;
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+        }
+
+        .navbar {
+          position: fixed;
+          top: 70px;
+          left: -100%;
+          width: 100%;
+          background: #051129;
+          padding: 20px;
+          transition: 0.3s;
+          z-index: 99;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .navbar.active {
+          left: 0;
+        }
+
+        .navbar a {
+          margin: 10px 0;
+          font-size: 20px;
+        }
+      }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <header class="header">
+      <a href="#home" class="logo">Portfolio</a>
+
+      <div class="menu-toggle" id="menuToggle">
+        <i class="bx bx-menu"></i>
+      </div>
+
+      <nav class="navbar" id="navbar">
+        <a href="#home" style="--i: 1">Home</a>
+        <a href="#about" style="--i: 2">About</a>
+        <a href="#services" style="--i: 3">Services</a>
+        <a href="#skills" style="--i: 4">Skills</a>
+        <a href="#portfolio" style="--i: 5">Portfolio</a>
+        <a href="#contact" style="--i: 6">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      {% if messages %} {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %} {% endif %} {% block content %} {% endblock %}
+    </main>
+
+    <div class="last-text">
+      <p>
+        Developed with Love by {{ global_profile.name|default:"Srijan Yadav" }}
+        © 2026
+      </p>
+    </div>
+    <a href="#home" class="top"><i class="bx bx-up-arrow-alt"></i></a>
+
+    <script>
+      // Mobile menu toggle
+      const menuToggle = document.getElementById("menuToggle");
+      const navbar = document.getElementById("navbar");
+
+      if (menuToggle) {
+        menuToggle.addEventListener("click", () => {
+          navbar.classList.toggle("active");
+        });
+      }
+
+      // Close mobile menu when clicking a link
+      document.querySelectorAll(".navbar a").forEach((link) => {
+        link.addEventListener("click", () => {
+          navbar.classList.remove("active");
+        });
+      });
+
+      // ========== FIX 1: SMOOTH SCROLLING WITH OFFSET FOR FIXED HEADER ==========
+      // This fixes the issue where sections get hidden behind the fixed header
+      document
+        .querySelectorAll('.navbar a, .logo, .top, a[href^="#"]')
+        .forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            const targetId = this.getAttribute("href");
+
+            // Skip if href is just "#" or empty
+            if (!targetId || targetId === "#") return;
+
+            let targetElement = document.querySelector(targetId);
+
+            // Special handling for Skills (since it's an h1 tag, not a section)
+            if (targetId === "#skills") {
+              targetElement = document.getElementById("skills");
+            }
+
+            if (targetElement) {
+              e.preventDefault();
+
+              // Fixed header height
+              let headerHeight = 0; // Default for About, Services, Portfolio, Contact
+
+              // Special offset for Skills
+              if (targetId === "#skills") {
+                headerHeight = 80; // No offset for Skills
+              }
+
+              // Calculate position with offset
+              const elementPosition = targetElement.getBoundingClientRect().top;
+              const offsetPosition =
+                elementPosition + window.pageYOffset - headerHeight;
+
+              // Smooth scroll to position
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth",
+              });
+
+              // Update URL without jumping
+              history.pushState(null, null, targetId);
+            }
+          });
+        });
+
+      // ========== FIX 2: ACTIVE NAVBAR HIGHLIGHTING ON SCROLL (ACCURATE) ==========
+      // Get all sections that need to be tracked
+      const allSections = document.querySelectorAll("section, #skills");
+      const allNavLinks = document.querySelectorAll(".navbar a");
+
+      function updateActiveLinkOnScroll() {
+        let currentSection = "";
+        const scrollPosition = window.scrollY + 100; // 100px offset for better detection
+
+        allSections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionBottom = sectionTop + section.offsetHeight;
+
+          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            currentSection = section.getAttribute("id");
+          }
+        });
+
+        allNavLinks.forEach((link) => {
+          link.classList.remove("active");
+          const href = link.getAttribute("href");
+
+          if (href === `#${currentSection}`) {
+            link.classList.add("active");
+          }
+        });
+      }
+
+      // Listen to scroll events with better performance
+      let scrollTimeout;
+      window.addEventListener("scroll", () => {
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(updateActiveLinkOnScroll, 50);
+      });
+
+      // Also update on page load and resize
+      window.addEventListener("load", updateActiveLinkOnScroll);
+      window.addEventListener("resize", updateActiveLinkOnScroll);
+
+      // ========== FIX 3: HANDLE PAGE LOAD WITH HASH IN URL ==========
+      window.addEventListener("load", () => {
+        if (window.location.hash) {
+          const target = document.querySelector(window.location.hash);
+          if (target) {
+            setTimeout(() => {
+              const headerHeight = 80;
+              const elementPosition = target.getBoundingClientRect().top;
+              const offsetPosition =
+                elementPosition + window.pageYOffset - headerHeight;
+
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth",
+              });
+            }, 100);
+          }
+        }
+      });
+
+      // Scroll to top button visibility
+      const topButton = document.querySelector(".top");
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+          topButton.style.display = "flex";
+        } else {
+          topButton.style.display = "none";
+        }
+      });
+
+      console.log(
+        "✅ Navigation fixes applied: Active highlighting + Smooth scroll with offset",
+      );
+    </script>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

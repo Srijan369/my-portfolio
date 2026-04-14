@@ -1,0 +1,681 @@
+{% extends 'portfolio_app/base.html' %} 
+{% load static %} 
+
+{% block title %}Portfolio - AI Developer{% endblock %} 
+
+{% block content %}
+
+<!-- Home Section -->
+<section class="home" id="home">
+  <div class="home-content">
+    <h3>Hello, It's Me</h3>
+    <h1>{{ global_profile.name|default:"Shiva" }}</h1>
+    <h3>And I'm a <span class="text"></span></h3>
+    <p>
+      {% if global_profile.bio %} 
+        {{ global_profile.bio|truncatewords:30 }}
+      {% endif %}
+    </p>
+    <div class="home-sci">
+      {% for social in global_social_links %}
+      <a href="{{ social.url }}" target="_blank" style="--i: {{ forloop.counter|add:5 }}">
+        <i class="{{ social.icon_class }}"></i>
+      </a>
+      {% endfor %}
+    </div>
+    <a href="#about" class="btn-box">More About Me</a>
+  </div>
+  <span class="home-imgHover"></span>
+</section>
+
+<!-- About Section -->
+<!-- About Section -->
+<section class="about" id="about">
+  <div class="about-img">
+    <img src="{% static 'images/Purple1.png' %}" alt="Profile Image" />
+  </div>
+  <div class="about-text">
+    <h2>About<span> Me</span></h2>
+    <h4>{{ global_profile.title|default:"AI Developer" }}</h4>
+    <p>
+      {% if global_profile.bio %} 
+        {{ global_profile.bio }} 
+      {% else %} 
+        I am an Artificial Intelligence Developer with a strong foundation in Python and Data Science. 
+        My work focuses on designing and implementing intelligent systems to solve complex problems. 
+      {% endif %}
+    </p>
+    
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
+      <a href="#contact" class="btn-box">Hire Me</a>
+      
+      {% if global_profile.resume_file and global_profile.resume_file.url %}
+      <a href="{{ global_profile.resume_file.url }}" class="btn-box" download style="display: inline-flex; align-items: center; gap: 8px;">
+        <i class='bx bx-download'></i>Resume
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Services Section -->
+<section class="services" id="services">
+  <div class="container">
+    <h1 class="sub-title">My <span>Services</span></h1>
+    <div class="services-list">
+      {% if services %} 
+        {% for service in services %}
+        <div>
+          <i class="{{ service.icon_class }}" style="color: #00eeff"></i>
+          <h2>{{ service.title }}</h2>
+          <p>{{ service.description|truncatewords:30 }}</p>
+          <a href="#" class="read">Learn More</a>
+        </div>
+        {% endfor %} 
+      {% else %}
+        <div>
+          <i class="bx bx-code" style="color: #00eeff"></i>
+          <h2>Data Analysis</h2>
+          <p>Expert in data analysis, visualization, and interpretation. Transforming raw data into actionable insights for business growth.</p>
+          <a href="#" class="read">Learn More</a>
+        </div>
+        <div>
+          <i class="bx bx-crop" style="color: #00eeff"></i>
+          <h2>Machine Learning</h2>
+          <p>Building intelligent ML models for predictive analytics, classification, and pattern recognition using advanced algorithms.</p>
+          <a href="#" class="read">Learn More</a>
+        </div>
+        <div>
+          <i class="bx bxl-apple" style="color: #00eeff"></i>
+          <h2>AI Solutions</h2>
+          <p>Developing cutting-edge AI solutions including NLP, computer vision, and generative AI applications.</p>
+          <a href="#" class="read">Learn More</a>
+        </div>
+        <div>
+          <i class="bx bxs-ghost" style="color: #00eeff"></i>
+          <h2>Data Science</h2>
+          <p>Comprehensive data science services including data preprocessing, feature engineering, and model deployment.</p>
+          <a href="#" class="read">Learn More</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Skills Section -->
+<h1 class="sub-title" id="skills">My <span>Skills</span></h1>
+
+<section>
+  <div class="container1">
+    <h1 class="heading1">Technical Skills</h1>
+    <div class="Technical-bars">
+      {% if technical_skills %} 
+        {% for skill in technical_skills %}
+        <div class="bar">
+          <i class="{{ skill.icon_class }}" style="color:{{ skill.color }}"></i>
+          <div class="info">
+            <span>{{ skill.name }}</span>
+          </div>
+          <div class="progress-line">
+            <span style="width: {{ skill.percentage }}%; background-color: #0ef;" data-percent="{{ skill.percentage }}%"></span>
+          </div>
+        </div>
+        {% endfor %} 
+      {% else %}
+        <div class="bar">
+          <i class="bx bxl-html5" style="color: #e34c26"></i>
+          <div class="info"><span>HTML</span></div>
+          <div class="progress-line"><span style="width: 73%"></span></div>
+        </div>
+        <div class="bar">
+          <i class="bx bxl-css3" style="color: #6924b3"></i>
+          <div class="info"><span>CSS</span></div>
+          <div class="progress-line"><span style="width: 78%"></span></div>
+        </div>
+        <div class="bar">
+          <i class="bx bxl-javascript" style="color: #f7df1e"></i>
+          <div class="info"><span>JavaScript</span></div>
+          <div class="progress-line"><span style="width: 60%"></span></div>
+        </div>
+        <div class="bar">
+          <i class="bx bxl-python" style="color: #3d6998"></i>
+          <div class="info"><span>Python</span></div>
+          <div class="progress-line"><span style="width: 93%"></span></div>
+        </div>
+        <div class="bar">
+          <i class="bx bxl-postgresql" style="color: #f29111"></i>
+          <div class="info"><span>SQL</span></div>
+          <div class="progress-line"><span style="width: 90%"></span></div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="container1">
+    <h1 class="heading1">Professional Skills</h1>
+    <div class="radial-bars">
+        {% if professional_skills %}
+            {% for skill in professional_skills %}
+            <div class="radial-bar" data-percentage="{{ skill.percentage }}">
+                <svg x="0px" y="0px" viewBox="0 0 200 200">
+                    <circle class="progress-bar" cx="100" cy="100" r="80"></circle>
+                    <circle class="path" cx="100" cy="100" r="80"></circle>
+                </svg>
+                <div class="percentage">{{ skill.percentage }}%</div>
+                <div class="text">{{ skill.name }}</div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="radial-bar" data-percentage="90">
+                <svg x="0px" y="0px" viewBox="0 0 200 200">
+                    <circle class="progress-bar" cx="100" cy="100" r="80"></circle>
+                    <circle class="path" cx="100" cy="100" r="80"></circle>
+                </svg>
+                <div class="percentage">90%</div>
+                <div class="text">Creativity</div>
+            </div>
+            <div class="radial-bar" data-percentage="85">
+                <svg x="0px" y="0px" viewBox="0 0 200 200">
+                    <circle class="progress-bar" cx="100" cy="100" r="80"></circle>
+                    <circle class="path" cx="100" cy="100" r="80"></circle>
+                </svg>
+                <div class="percentage">85%</div>
+                <div class="text">Communication</div>
+            </div>
+            <div class="radial-bar" data-percentage="60">
+                <svg x="0px" y="0px" viewBox="0 0 200 200">
+                    <circle class="progress-bar" cx="100" cy="100" r="80"></circle>
+                    <circle class="path" cx="100" cy="100" r="80"></circle>
+                </svg>
+                <div class="percentage">60%</div>
+                <div class="text">Problem Solving</div>
+            </div>
+            <div class="radial-bar" data-percentage="93">
+                <svg x="0px" y="0px" viewBox="0 0 200 200">
+                    <circle class="progress-bar" cx="100" cy="100" r="80"></circle>
+                    <circle class="path" cx="100" cy="100" r="80"></circle>
+                </svg>
+                <div class="percentage">93%</div>
+                <div class="text">Team Work</div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+</section>
+
+<!-- Portfolio Section -->
+<section class="portfolio-section" id="portfolio">
+  <div class="container">
+    <h1 class="sub-title">Latest <span>Projects</span></h1>
+
+    <div class="portfolio-grid">
+      {% if projects %} 
+        {% for project in projects %}
+        <div class="portfolio-card">
+          <div class="portfolio-card-image">
+            {% if project.image and project.image.url %}
+            <img src="{{ project.image.url }}" alt="{{ project.title }}" />
+            {% else %}
+            <img src="{% static 'images/default-project.jpg' %}" alt="{{ project.title }}" />
+            {% endif %}
+          </div>
+          <div class="portfolio-card-content">
+            <h3>{{ project.title }}</h3>
+            <div class="project-description">
+              {{ project.description|safe|truncatewords:25|linebreaks }}
+            </div>
+            <div class="project-technologies">
+              <strong>Tech Stack:</strong> {{ project.technologies }}
+            </div>
+            <a href="{% url 'portfolio_app:project_detail' project.id %}" class="project-link">
+              View Project <i class="bx bx-right-arrow-alt"></i>
+            </a>
+          </div>
+        </div>
+        {% endfor %} 
+      {% else %}
+        <div class="portfolio-card">
+          <div class="portfolio-card-image">
+            <img src="{% static 'images/PY.webp' %}" alt="AI Chatbot" />
+          </div>
+          <div class="portfolio-card-content">
+            <h3>AI Chatbot Development</h3>
+            <div class="project-description">
+              Developed an intelligent chatbot using Python and NLP for customer service automation.
+            </div>
+            <div class="project-technologies">
+              <strong>Tech Stack:</strong> Python, TensorFlow, NLTK, Flask
+            </div>
+            <a href="#" class="project-link">View Project <i class="bx bx-right-arrow-alt"></i></a>
+          </div>
+        </div>
+
+        <div class="portfolio-card">
+          <div class="portfolio-card-image">
+            <img src="{% static 'images/DS.webp' %}" alt="Analytics Dashboard" />
+          </div>
+          <div class="portfolio-card-content">
+            <h3>Predictive Analytics Dashboard</h3>
+            <div class="project-description">
+              Interactive dashboard for sales prediction using machine learning and real-time data.
+            </div>
+            <div class="project-technologies">
+              <strong>Tech Stack:</strong> Django, Pandas, Scikit-learn, Chart.js
+            </div>
+            <a href="#" class="project-link">View Project <i class="bx bx-right-arrow-alt"></i></a>
+          </div>
+        </div>
+
+        <div class="portfolio-card">
+          <div class="portfolio-card-image">
+            <img src="{% static 'images/AI.webp' %}" alt="Computer Vision" />
+          </div>
+          <div class="portfolio-card-content">
+            <h3>Computer Vision System</h3>
+            <div class="project-description">
+              Real-time object detection system using deep learning for security applications.
+            </div>
+            <div class="project-technologies">
+              <strong>Tech Stack:</strong> Python, OpenCV, YOLO, CNN
+            </div>
+            <a href="#" class="project-link">View Project <i class="bx bx-right-arrow-alt"></i></a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact" id="contact">
+  <div class="contact-text">
+    <h2>Contact <span>Me</span></h2>
+    <h4>Let's work Together</h4>
+    <p>
+      Have a project in mind? I'd love to hear about it! Whether you need help with AI development, 
+      data science, or just want to connect, feel free to reach out. I'm always excited to collaborate 
+      on innovative projects and bring ideas to life.
+    </p>
+    <div class="contact-list">
+      <li><i class="bx bxs-send bx-flip-vertical"></i> {{ global_profile.email|default:"contact@gmail.com" }}</li>
+      <li><i class="bx bxs-phone"></i> {{ global_profile.phone|default:"0123456789" }}</li>
+      {% if global_profile.location %}
+      <li><i class="bx bxs-map"></i> {{ global_profile.location }}</li>
+      {% endif %}
+    </div>
+    <div class="contact-icons">
+      {% for social in global_social_links %}
+      <a href="{{ social.url }}" target="_blank"><i class="{{ social.icon_class }}"></i></a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="contact-form">
+    <form method="POST" action="{% url 'portfolio_app:index' %}" id="contactForm">
+      {% csrf_token %}
+
+      <input type="text" name="name" placeholder="Enter Your Name" required value="{{ form.name.value|default:'' }}" />
+      {% if form.name.errors %}
+      <ul class="errorlist">
+        {% for error in form.name.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <input type="email" name="email" placeholder="Enter Your Email" required value="{{ form.email.value|default:'' }}" />
+      {% if form.email.errors %}
+      <ul class="errorlist">
+        {% for error in form.email.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <input type="text" name="subject" placeholder="Enter Your Subject" value="{{ form.subject.value|default:'' }}" />
+      {% if form.subject.errors %}
+      <ul class="errorlist">
+        {% for error in form.subject.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <textarea name="message" cols="40" rows="10" placeholder="Enter Your Message" required>{{ form.message.value|default:'' }}</textarea>
+      {% if form.message.errors %}
+      <ul class="errorlist">
+        {% for error in form.message.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <input type="submit" value="Send Message" class="send" />
+    </form>
+  </div>
+</section>
+
+<script>
+  var typed = new Typed(".text", {
+    strings: [
+      "Data Analyst",
+      "Python Developer", 
+      "Power BI Enthusiast",
+      "SQL Learner",
+      "Future AI Engineer",
+      "Data Scientist",
+    ],
+    typeSpeed: 70,
+    backSpeed: 70,
+    backDelay: 1000,
+    loop: true,
+    showCursor: true,
+    cursorChar: "|",
+    startDelay: 500,
+    smartBackspace: true,
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".progress-line span").forEach((span) => {
+      if (!span.getAttribute("data-percent")) {
+        const width = span.style.width;
+        span.setAttribute("data-percent", width);
+      }
+    });
+  });
+
+  // Fix radial bars to match exact percentages
+  document.addEventListener('DOMContentLoaded', function() {
+    function setCirclePercentage(circle, percentage) {
+      const radius = 80;
+      const circumference = 2 * Math.PI * radius;
+      const dashoffset = circumference - (percentage / 100) * circumference;
+      circle.style.strokeDasharray = circumference;
+      circle.style.strokeDashoffset = dashoffset;
+    }
+    
+    document.querySelectorAll('.radial-bar').forEach(bar => {
+      const percentageText = bar.querySelector('.percentage');
+      const path = bar.querySelector('.path');
+      
+      if (percentageText && path) {
+        let percentage = parseInt(percentageText.textContent);
+        if (isNaN(percentage) && bar.dataset.percentage) {
+          percentage = parseInt(bar.dataset.percentage);
+        }
+        
+        if (!isNaN(percentage)) {
+          setCirclePercentage(path, 0);
+          setTimeout(() => {
+            setCirclePercentage(path, percentage);
+          }, 100);
+        }
+      }
+    });
+  });
+</script>
+
+
+
+
+<style>
+  /* Portfolio Section Styles */
+  .portfolio-section {
+    padding: 50px 0 80px;
+    background: #081b29;
+  }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+    margin-top: 50px;
+  }
+
+  .portfolio-card {
+    background: rgba(5, 17, 41, 0.6);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    box-shadow: 1px 1px 20px #012290f7, 1px 1px 40px #0053b8f7;
+  }
+
+  .portfolio-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 30px rgba(0, 238, 255, 0.3);
+  }
+
+  .portfolio-card-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+  }
+
+  .portfolio-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .portfolio-card:hover .portfolio-card-image img {
+    transform: scale(1.1);
+  }
+
+  .portfolio-card-content {
+    padding: 25px;
+  }
+
+  .portfolio-card-content h3 {
+    font-size: 24px;
+    color: #0ef;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+
+  .project-description {
+    color: #ddd;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    min-height: 80px;
+  }
+
+  .project-technologies {
+    color: #aaa;
+    font-size: 13px;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(0, 238, 255, 0.2);
+    border-bottom: 1px solid rgba(0, 238, 255, 0.2);
+  }
+
+  .project-technologies strong {
+    color: #0ef;
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #0ef;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.3s;
+  }
+
+  .project-link:hover {
+    gap: 12px;
+    color: #fff;
+  }
+
+  /* Progress Bar Styles */
+  .progress-line {
+    position: relative;
+    border-radius: 10px;
+    width: 100%;
+    height: 5px;
+    background-color: #000;
+    margin-top: 8px;
+  }
+
+  .progress-line span {
+    height: 100%;
+    background-color: #0ef;
+    position: absolute;
+    border-radius: 10px;
+    animation: animateBar 1s cubic-bezier(1, 0, 0.5, 1) forwards;
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  @keyframes animateBar {
+    100% {
+      transform: scaleX(1);
+    }
+  }
+
+  .progress-line span::after {
+    position: absolute;
+    padding: 1px 8px;
+    background-color: #000;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 3px;
+    top: -25px;
+    right: 0;
+    content: attr(data-percent);
+    opacity: 0;
+    animation: showText 0.5s 1s linear forwards;
+  }
+
+  @keyframes showText {
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Alert Messages */
+  .alert {
+    padding: 15px 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    max-width: 90%;
+    width: fit-content;
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1000;
+    animation: slideIn 0.5s ease-out;
+  }
+
+  .alert-success {
+    background-color: #0ef;
+    color: #081b29;
+    border-left: 5px solid #00ff00;
+  }
+
+  .alert-error {
+    background-color: #ff4444;
+    color: #fff;
+    border-left: 5px solid #cc0000;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .errorlist {
+    color: #ff4444;
+    list-style: none;
+    margin: 5px 0;
+    padding: 0;
+    font-size: 14px;
+  }
+
+  section {
+    scroll-margin-top: 80px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .portfolio-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .portfolio-card-image {
+      height: 220px;
+    }
+
+    .portfolio-card-content h3 {
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .portfolio-card-image {
+      height: 180px;
+    }
+
+    .portfolio-card-content {
+      padding: 20px;
+    }
+  }
+
+
+</style>
+
+<script>
+    // Fix radial bars to match exact percentages
+    document.addEventListener('DOMContentLoaded', function() {
+        function setCirclePercentage(circle, percentage) {
+            const radius = 80;
+            const circumference = 2 * Math.PI * radius; // 2 * PI * 80 = 502.65
+            
+            // Calculate dashoffset based on percentage
+            // At 0%: full circle (offset = circumference)
+            // At 100%: empty circle (offset = 0)
+            const dashoffset = circumference - (percentage / 100) * circumference;
+            
+            circle.style.strokeDasharray = circumference;
+            circle.style.strokeDashoffset = dashoffset;
+        }
+        
+        // Process all radial bars
+        document.querySelectorAll('.radial-bar').forEach(bar => {
+            const percentageText = bar.querySelector('.percentage');
+            const path = bar.querySelector('.path');
+            
+            if (percentageText && path) {
+                // Get percentage (remove % sign)
+                let percentage = parseInt(percentageText.textContent);
+                
+                // Also check data-percentage attribute
+                if (isNaN(percentage) && bar.dataset.percentage) {
+                    percentage = parseInt(bar.dataset.percentage);
+                }
+                
+                if (!isNaN(percentage)) {
+                    // Set initial state (empty circle)
+                    setCirclePercentage(path, 0);
+                    
+                    // Animate to target percentage
+                    setTimeout(() => {
+                        setCirclePercentage(path, percentage);
+                    }, 100);
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
