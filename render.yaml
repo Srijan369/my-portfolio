@@ -3,7 +3,11 @@ services:
     name: my-portfolio
     runtime: python
     buildCommand: pip install -r requirements.txt
+<<<<<<< HEAD
     startCommand: python manage.py migrate --noinput && gunicorn Real_Portfolio.wsgi:application
+=======
+    startCommand: python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn Real_Portfolio.wsgi:application
+>>>>>>> 7100369b819ce363282a56a0a5161487bad0c24f
     envVars:
       - key: DEBUG
         value: "False"
