@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: my-portfolio
-    runtime: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn Real_Portfolio.wsgi:application
-    envVars:
-      - key: DEBUG
-        value: "False"
